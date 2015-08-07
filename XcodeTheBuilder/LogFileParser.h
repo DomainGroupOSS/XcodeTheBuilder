@@ -10,4 +10,5 @@
 
 @interface LogFileParser : NSObject
 
+- (NSArray *)parse:(NSString *)logFile;
 @end

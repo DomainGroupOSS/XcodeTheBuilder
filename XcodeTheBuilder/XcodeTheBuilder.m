@@ -7,10 +7,13 @@
 //
 
 #import "XcodeTheBuilder.h"
+#import "LogFileWriter.h"
 #import "LogFileManager.h"
+#import "LogFileParser.h"
+
+static NSString *const str = @"xcodeTheBuilder.log";
 
 @interface XcodeTheBuilder ()
-@property(nonatomic, strong, readwrite) NSBundle *bundle;
 @property(nonatomic, strong) LogFileManager *logFileManager;
 @end
 
@@ -20,55 +23,58 @@
     return sharedPlugin;
 }
 
-- (id)initWithBundle:(NSBundle *)plugin {
+- (id)init {
     if (self = [super init]) {
-        self.bundle = plugin;
-        self.logFileManager = [LogFileManager new];
-        [self addListeners];
+        self.logFileManager = [[LogFileManager alloc] initWithWriter:[self createWriter] parser:[LogFileParser new]];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didApplicationFinishLaunchingNotification:)
+                                                     name:NSApplicationDidFinishLaunchingNotification
+                                                   object:nil];
     }
     return self;
 }
 
-- (void)addListeners {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didApplicationFinishLaunchingNotification:)
-                                                 name:NSApplicationDidFinishLaunchingNotification
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(buildWillStart:) name:@"IDEBuildOperationWillStartNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(buildDidStop:) name:@"IDEBuildOperationDidStopNotification" object:nil];
+- (LogFileWriter *)createWriter {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* documentsPath =  paths[0];
+    NSString* fullFilePath = [documentsPath stringByAppendingPathComponent:str];
+    return [[LogFileWriter alloc] initWithFilePath:fullFilePath];
 }
 
-
-- (void)buildWillStart:(NSNotification *)notification {
-    [self.logFileManager buildStarted];
-}
-
-- (void)buildDidStop:(NSNotification *)notification {
-    [self.logFileManager buildFinished];
-}
 
 - (void)didApplicationFinishLaunchingNotification:(NSNotification *)notification {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSApplicationDidFinishLaunchingNotification object:nil];
 
+    [self addTotalBuildTimeItem];
+}
+
+- (void)addTotalBuildTimeItem {
     NSMenuItem *menuItem = [[NSApp mainMenu] itemWithTitle:@"Edit"];
     if (menuItem) {
         [[menuItem submenu] addItem:[NSMenuItem separatorItem]];
-        NSMenuItem *actionMenuItem = [[NSMenuItem alloc] initWithTitle:@"Do Action" action:@selector(doMenuAction) keyEquivalent:@""];
-        //[actionMenuItem setKeyEquivalentModifierMask:NSAlphaShiftKeyMask | NSControlKeyMask];
-        [actionMenuItem setTarget:self];
-        [[menuItem submenu] addItem:actionMenuItem];
+        NSMenuItem *totalBuildTime = [[NSMenuItem alloc] initWithTitle:@"Total Build Time" action:@selector(showTotalBuildTime) keyEquivalent:@""];
+        [totalBuildTime setTarget:self];
+        [[menuItem submenu] addItem:totalBuildTime];
+
+        NSMenuItem *resetBuildTime = [[NSMenuItem alloc] initWithTitle:@"Clear Build Time History" action:@selector(clearTotalBuildTime) keyEquivalent:@""];
+        [resetBuildTime setTarget:self];
+        [[menuItem submenu] addItem:resetBuildTime];
     }
 }
 
-- (void)doMenuAction {
+- (void)clearTotalBuildTime {
+    [self.logFileManager clearBuildHistory];
+}
+
+- (void)showTotalBuildTime {
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:@"Hello, World"];
+    [alert setMessageText:[self.logFileManager summary]];
     [alert runModal];
 }
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 
 @end

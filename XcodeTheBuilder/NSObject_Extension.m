@@ -18,7 +18,7 @@
     NSString *currentApplicationName = [[NSBundle mainBundle] infoDictionary][@"CFBundleName"];
     if ([currentApplicationName isEqual:@"Xcode"]) {
         dispatch_once(&onceToken, ^{
-            sharedPlugin = [[XcodeTheBuilder alloc] initWithBundle:plugin];
+            sharedPlugin = [[XcodeTheBuilder alloc] init];
         });
     }
 }

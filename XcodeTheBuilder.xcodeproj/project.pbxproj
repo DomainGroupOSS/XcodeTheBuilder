@@ -14,7 +14,16 @@
 		9A09599D1B74964700AF4CF4 /* XcodeTheBuilder.xcscheme in Resources */ = {isa = PBXBuildFile; fileRef = 9A09599C1B74964700AF4CF4 /* XcodeTheBuilder.xcscheme */; };
 		9A0959A01B74964700AF4CF4 /* XcodeTheBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A09599F1B74964700AF4CF4 /* XcodeTheBuilder.m */; };
 		9A0959A31B74964700AF4CF4 /* NSObject_Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A0959A21B74964700AF4CF4 /* NSObject_Extension.m */; };
-		D15ED946EB5A1216A7FF8B1F /* LogFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D15ED77F028B596D2CB092AE /* LogFileManager.m */; };
+		D15ED26550466D23423F5736 /* LogFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D15ED3B5663F936FADB91680 /* LogFileManager.m */; };
+		D15ED93CBA5D1F6C7431E119 /* testXcodeTheBuilder.log in Resources */ = {isa = PBXBuildFile; fileRef = D15EDD79C6F7F0ADD8ADDE7F /* testXcodeTheBuilder.log */; };
+		D15ED946EB5A1216A7FF8B1F /* LogFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = D15ED77F028B596D2CB092AE /* LogFileWriter.m */; };
+		D15EDA15D23B85051489429D /* testXcodeTheBuilder.log in Resources */ = {isa = PBXBuildFile; fileRef = D15EDD79C6F7F0ADD8ADDE7F /* testXcodeTheBuilder.log */; };
+		D15EDBB0F44514569FB70A19 /* LogFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = D15ED77F028B596D2CB092AE /* LogFileWriter.m */; };
+		D15EDCBEA204D9CAAB271EA9 /* LogFileParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E48795E1B74C1BA0086D0FA /* LogFileParser.m */; };
+		D15EDDE4CF952A439CDF4C97 /* LogFileEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = D15ED6E888BF118E60F42566 /* LogFileEntry.m */; };
+		D15EDE199C43B8167E495746 /* LogWriterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D15EDAE6B00433849154842F /* LogWriterTests.m */; };
+		D15EDE5D47F28A7C9A091618 /* LogFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D15ED3B5663F936FADB91680 /* LogFileManager.m */; };
+		D15EDFE93A6C223455E1B9D4 /* LogFileEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = D15ED6E888BF118E60F42566 /* LogFileEntry.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,8 +41,14 @@
 		9A09599F1B74964700AF4CF4 /* XcodeTheBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XcodeTheBuilder.m; sourceTree = "<group>"; };
 		9A0959A11B74964700AF4CF4 /* NSObject_Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSObject_Extension.h; sourceTree = "<group>"; };
 		9A0959A21B74964700AF4CF4 /* NSObject_Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSObject_Extension.m; sourceTree = "<group>"; };
-		D15ED1213561A8420EFB27CD /* LogFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogFileManager.h; sourceTree = "<group>"; };
-		D15ED77F028B596D2CB092AE /* LogFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogFileManager.m; sourceTree = "<group>"; };
+		D15ED1213561A8420EFB27CD /* LogFileWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogFileWriter.h; sourceTree = "<group>"; };
+		D15ED3B5663F936FADB91680 /* LogFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogFileManager.m; sourceTree = "<group>"; };
+		D15ED6E888BF118E60F42566 /* LogFileEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogFileEntry.m; sourceTree = "<group>"; };
+		D15ED77F028B596D2CB092AE /* LogFileWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogFileWriter.m; sourceTree = "<group>"; };
+		D15ED9B935CFEE90B8373B37 /* LogFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogFileManager.h; sourceTree = "<group>"; };
+		D15EDAE6B00433849154842F /* LogWriterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogWriterTests.m; sourceTree = "<group>"; };
+		D15EDD79C6F7F0ADD8ADDE7F /* testXcodeTheBuilder.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.log; path = testXcodeTheBuilder.log; sourceTree = "<group>"; };
+		D15EDE088C195A26FC4F3F7E /* LogFileEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogFileEntry.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +76,8 @@
 			children = (
 				2E4879681B74C3F10086D0FA /* XcodeTheBuilderTests.m */,
 				2E4879661B74C3F10086D0FA /* Supporting Files */,
+				D15EDD79C6F7F0ADD8ADDE7F /* testXcodeTheBuilder.log */,
+				D15EDAE6B00433849154842F /* LogWriterTests.m */,
 			);
 			path = XcodeTheBuilderTests;
 			sourceTree = "<group>";
@@ -111,8 +128,12 @@
 				9A0959A11B74964700AF4CF4 /* NSObject_Extension.h */,
 				9A0959A21B74964700AF4CF4 /* NSObject_Extension.m */,
 				9A09599A1B74964700AF4CF4 /* Supporting Files */,
-				D15ED77F028B596D2CB092AE /* LogFileManager.m */,
-				D15ED1213561A8420EFB27CD /* LogFileManager.h */,
+				D15ED77F028B596D2CB092AE /* LogFileWriter.m */,
+				D15ED1213561A8420EFB27CD /* LogFileWriter.h */,
+				D15ED6E888BF118E60F42566 /* LogFileEntry.m */,
+				D15EDE088C195A26FC4F3F7E /* LogFileEntry.h */,
+				D15ED3B5663F936FADB91680 /* LogFileManager.m */,
+				D15ED9B935CFEE90B8373B37 /* LogFileManager.h */,
 			);
 			path = XcodeTheBuilder;
 			sourceTree = "<group>";
@@ -203,6 +224,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D15EDA15D23B85051489429D /* testXcodeTheBuilder.log in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A09599D1B74964700AF4CF4 /* XcodeTheBuilder.xcscheme in Resources */,
+				D15ED93CBA5D1F6C7431E119 /* testXcodeTheBuilder.log in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,6 +245,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E4879691B74C3F10086D0FA /* XcodeTheBuilderTests.m in Sources */,
+				D15EDCBEA204D9CAAB271EA9 /* LogFileParser.m in Sources */,
+				D15EDBB0F44514569FB70A19 /* LogFileWriter.m in Sources */,
+				D15EDDE4CF952A439CDF4C97 /* LogFileEntry.m in Sources */,
+				D15EDE5D47F28A7C9A091618 /* LogFileManager.m in Sources */,
+				D15EDE199C43B8167E495746 /* LogWriterTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,7 +260,9 @@
 				9A0959A01B74964700AF4CF4 /* XcodeTheBuilder.m in Sources */,
 				2E48795F1B74C1BA0086D0FA /* LogFileParser.m in Sources */,
 				9A0959A31B74964700AF4CF4 /* NSObject_Extension.m in Sources */,
-				D15ED946EB5A1216A7FF8B1F /* LogFileManager.m in Sources */,
+				D15ED946EB5A1216A7FF8B1F /* LogFileWriter.m in Sources */,
+				D15EDFE93A6C223455E1B9D4 /* LogFileEntry.m in Sources */,
+				D15ED26550466D23423F5736 /* LogFileManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -4,53 +4,95 @@
 //
 
 #import "LogFileManager.h"
+#import "LogFileWriter.h"
+#import "LogFileParser.h"
+#import "LogFileEntry.h"
 
-static NSString *const logFileName = @"timeLogFile.txt";
 
 @interface LogFileManager ()
-@property(nonatomic, strong) NSDate *buildStartTime;
-@property(nonatomic, strong) NSString *documentsPath;
-@property(nonatomic, strong) NSString *logFilePath;
+@property(nonatomic, strong) LogFileWriter *writer;
+@property(nonatomic, strong) LogFileParser *parser;
 @end
 
 @implementation LogFileManager
 
-- (instancetype)init {
+- (instancetype)initWithWriter:(LogFileWriter *)writer parser:(LogFileParser *)parser {
     self = [super init];
     if (self) {
-        self.documentsPath = [self findDocumentsPath];
-        self.logFilePath = [self.documentsPath stringByAppendingPathComponent:logFileName];
+        self.writer = writer;
+        self.parser = parser;
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(buildWillStart) name:@"IDEBuildOperationWillStartNotification" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(buildDidStop) name:@"IDEBuildOperationDidStopNotification" object:nil];
     }
 
     return self;
 }
 
-- (NSString *)findDocumentsPath {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    return paths[0];
+- (void)buildDidStop {
+    [self.writer buildWillStart];
 }
 
-- (void)appendToFile:(NSString *)stringContent {
-    NSFileHandle *logFileHandle = [NSFileHandle fileHandleForWritingAtPath:[self logFilePath]];
-    if (!logFileHandle) {
-        [[NSFileManager defaultManager] createFileAtPath:[self logFilePath] contents:nil attributes:nil];
-        logFileHandle = [NSFileHandle fileHandleForWritingAtPath:[self logFilePath]];
+- (void)buildWillStart {
+    [self.writer buildDidStop];
+}
+
+- (NSString *)summary {
+    NSArray *buildsForDays = [self buildsForDays];
+
+    NSMutableString *summary = [NSMutableString string];
+
+    for (LogFileEntry *entry in buildsForDays) {
+        [summary appendString:[NSString stringWithFormat:@"%@\n", [entry buildTimeString]]];
     }
-    if (!logFileHandle) return;
-    @try {
-        [logFileHandle seekToEndOfFile];
-        [logFileHandle writeData:[stringContent dataUsingEncoding:NSUTF8StringEncoding]];
+
+    [summary appendString:[NSString stringWithFormat:@"total build time: %@", [self totalBuildTime:buildsForDays]]];
+
+    return [NSString stringWithString:summary];
+}
+
+- (NSArray *)buildsForDays {
+    NSString *logFile = [self.writer logFile];
+    NSArray *allBuilds = [self.parser parse:logFile];
+    NSArray *distinctDays = [allBuilds valueForKeyPath:@"@distinctUnionOfObjects.buildDay"];
+    NSArray *buildsForDays = [self buildsForDays:allBuilds distinctDays:distinctDays];
+    return buildsForDays;
+}
+
+- (NSString *)totalBuildTime:(NSArray *)builds {
+    NSInteger totalBuildTime = [[builds valueForKeyPath:@"@sum.buildTime"] intValue];
+    NSDate *buildDate = [NSDate dateWithTimeIntervalSince1970:totalBuildTime];
+    NSDateComponents *components = [[NSCalendar currentCalendar]
+            components:NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit
+              fromDate:buildDate];
+    return [NSString stringWithFormat:@"%dh %dm %ds", (int) [components hour], (int) [components minute], (int) [components second]];
+}
+
+- (NSArray *)buildsForDays:(NSArray *)allBuilds distinctDays:(NSArray *)distinctDays {
+    NSMutableArray *buildsForDays = [NSMutableArray new];
+    for (NSDate *day in distinctDays) {
+        LogFileEntry *buildTimeForDay = [self allBuildsForDay:day builds:allBuilds];
+        [buildsForDays addObject:buildTimeForDay];
     }
-    @catch (NSException *e) {}
-    [logFileHandle closeFile];
+    return [NSArray arrayWithArray:buildsForDays];
 }
 
-
-- (void)buildStarted {
-    self.buildStartTime = [NSDate date];
+- (LogFileEntry *)allBuildsForDay:(NSDate *)day builds:(NSArray *)builds {
+    NSTimeInterval buildTimeForDay = 0;
+    for (LogFileEntry *entry in builds) {
+        if ([entry.buildDay isEqualToDate:day]) {
+            buildTimeForDay += entry.buildTime;
+        }
+    }
+    return [LogFileEntry entryWithBuildDate:day buildTime:buildTimeForDay];
 }
 
-- (void)buildFinished {
-    [self appendToFile:[NSString stringWithFormat:@"%@,%f\n", [NSDate date], [[NSDate date] timeIntervalSinceDate:self.buildStartTime]]];
+- (void)clearBuildHistory {
+    [self.writer clearLogFile];
 }
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 @end

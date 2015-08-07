@@ -9,25 +9,24 @@
 #import <Cocoa/Cocoa.h>
 #import <XCTest/XCTest.h>
 #import "LogFileParser.h"
+#import "LogFileWriter.h"
+#import "LogFileEntry.h"
+#import "LogFileManager.h"
 
 @interface XcodeTheBuilderTests : XCTestCase
-
+@property(nonatomic, strong) LogFileManager *manager;
 @end
 
 @implementation XcodeTheBuilderTests
 
 - (void)setUp {
+    self.manager = [[LogFileManager alloc] initWithWriter:[LogFileWriter new] parser:[LogFileParser new]];
     [super setUp];
 }
 
-- (void)tearDown {
-    [super tearDown];
-}
-
 - (void)testExample {
-    LogFileParser *parser = [LogFileParser new];
-    [parser parse:@""
-
+    NSString *summary = [self.manager summary];
+    XCTAssertNotNil(summary);
 }
 
 

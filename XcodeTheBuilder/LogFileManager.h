@@ -5,9 +5,15 @@
 
 #import <Foundation/Foundation.h>
 
+@class LogFileWriter;
+@class LogFileParser;
+
 
 @interface LogFileManager : NSObject
-- (void)buildStarted;
 
-- (void)buildFinished;
+- (instancetype)initWithWriter:(LogFileWriter *)writer parser:(LogFileParser *)parser;
+
+- (NSString *)summary;
+
+- (void)clearBuildHistory;
 @end
