@@ -21,7 +21,6 @@
     if (self) {
         self.writer = writer;
         self.parser = parser;
-
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(buildWillStart) name:@"IDEBuildOperationWillStartNotification" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(buildDidStop) name:@"IDEBuildOperationDidStopNotification" object:nil];
     }
@@ -29,11 +28,11 @@
     return self;
 }
 
-- (void)buildDidStop {
+- (void)buildWillStart {
     [self.writer buildWillStart];
 }
 
-- (void)buildWillStart {
+- (void)buildDidStop {
     [self.writer buildDidStop];
 }
 

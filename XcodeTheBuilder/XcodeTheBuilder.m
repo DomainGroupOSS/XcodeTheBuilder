@@ -49,7 +49,7 @@ static NSString *const str = @"xcodeTheBuilder.log";
 }
 
 - (void)addTotalBuildTimeItem {
-    NSMenuItem *menuItem = [[NSApp mainMenu] itemWithTitle:@"Edit"];
+    NSMenuItem *menuItem = [[NSApp mainMenu] itemWithTitle:@"Window"];
     if (menuItem) {
         [[menuItem submenu] addItem:[NSMenuItem separatorItem]];
         NSMenuItem *totalBuildTime = [[NSMenuItem alloc] initWithTitle:@"Total Build Time" action:@selector(showTotalBuildTime) keyEquivalent:@""];

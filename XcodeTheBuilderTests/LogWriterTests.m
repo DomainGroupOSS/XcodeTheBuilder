@@ -34,7 +34,5 @@
     [[NSFileManager defaultManager] removeItemAtPath:tempLogFile error:&fileRemovalError];
     XCTAssertNil(fileRemovalError);
     XCTAssertNil([NSFileHandle fileHandleForReadingAtPath:tempLogFile]);
-
-
 }
 @end
