@@ -62,7 +62,7 @@
     NSInteger totalBuildTime = [[builds valueForKeyPath:@"@sum.buildTime"] intValue];
     NSDate *buildDate = [NSDate dateWithTimeIntervalSince1970:totalBuildTime];
     NSDateComponents *components = [[NSCalendar currentCalendar]
-            components:NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitDay
+            components:NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond
               fromDate:buildDate];
     return [NSString stringWithFormat:@"%dh %dm %ds", (int) [components hour], (int) [components minute], (int) [components second]];
 }
@@ -79,11 +79,16 @@
 - (LogFileEntry *)allBuildsForDay:(NSDate *)day builds:(NSArray *)builds {
     NSTimeInterval buildTimeForDay = 0;
     for (LogFileEntry *entry in builds) {
-        if ([entry.buildDay isEqualToDate:day]) {
+        if ([[self dateWithoutTime:entry.buildDay] isEqualToDate:[self dateWithoutTime:day]]) {
             buildTimeForDay += entry.buildTime;
         }
     }
     return [LogFileEntry entryWithBuildDate:day buildTime:buildTimeForDay];
+}
+
+-(NSDate*)dateWithoutTime:(NSDate*)date{
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+    return [[NSCalendar currentCalendar] dateFromComponents:components];
 }
 
 - (void)clearBuildHistory {

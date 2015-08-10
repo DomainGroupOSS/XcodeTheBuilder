@@ -63,6 +63,18 @@ static NSString *const str = @"xcodeTheBuilder.log";
 }
 
 - (void)clearTotalBuildTime {
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:@"Clear log?"];
+    [alert addButtonWithTitle:@"Cancel"];
+    [alert addButtonWithTitle:@"Clear"];
+    [alert setAlertStyle:NSWarningAlertStyle];
+    NSButton* clearButton = [alert buttons][1];
+    [clearButton setTarget:self];
+    [clearButton setAction:@selector(clearHistory:)];
+    [alert runModal];
+}
+
+-(void) clearHistory:(id)sender {
     [self.logFileManager clearBuildHistory];
 }
 
