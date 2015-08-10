@@ -19,4 +19,6 @@
 + (instancetype)entryWithBuildDate:(NSDate *)buildDate buildTime:(NSTimeInterval)buildTime;
 
 + (instancetype)entryWithBuildDateString:(NSString *)buildDate buildTimeString:(NSString *)buildTime;
+
++ (NSDateFormatter*) parsingDateFormatter;
 @end

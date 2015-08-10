@@ -62,7 +62,7 @@
     NSInteger totalBuildTime = [[builds valueForKeyPath:@"@sum.buildTime"] intValue];
     NSDate *buildDate = [NSDate dateWithTimeIntervalSince1970:totalBuildTime];
     NSDateComponents *components = [[NSCalendar currentCalendar]
-            components:NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit
+            components:NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitDay
               fromDate:buildDate];
     return [NSString stringWithFormat:@"%dh %dm %ds", (int) [components hour], (int) [components minute], (int) [components second]];
 }

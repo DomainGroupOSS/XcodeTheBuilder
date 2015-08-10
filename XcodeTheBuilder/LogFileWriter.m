@@ -4,6 +4,7 @@
 //
 
 #import "LogFileWriter.h"
+#import "LogFileEntry.h"
 
 @interface LogFileWriter ()
 @property(nonatomic, strong) NSDate *buildStartTime;
@@ -47,7 +48,8 @@
 }
 
 - (void)buildDidStop {
-    [self appendToFile:[NSString stringWithFormat:@"%@,%f\n", [NSDate date], [[NSDate date] timeIntervalSinceDate:self.buildStartTime]]];
+    NSString* buildDateString = [[[LogFileEntry class] parsingDateFormatter] stringFromDate:[NSDate date]];
+    [self appendToFile:[NSString stringWithFormat:@"%@,%f\n", buildDateString, [[NSDate date] timeIntervalSinceDate:self.buildStartTime]]];
 }
 
 - (void)clearLogFile {
