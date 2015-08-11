@@ -24,7 +24,7 @@
     dispatch_once(&onceToken, ^{
         parsingDateFormatter = [[NSDateFormatter alloc] init];
         [parsingDateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        [parsingDateFormatter setTimeZone:[NSTimeZone systemTimeZone]];
+        [parsingDateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
     });
     return parsingDateFormatter;
 }
